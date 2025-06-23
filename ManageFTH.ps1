@@ -190,6 +190,7 @@ $btnExclude.Add_Click({
     [Windows.MessageBox]::Show("$app is already excluded.","Warning", 'OK', 'Warning')
   } else {
     Set-ItemProperty $regPath ExclusionList ($list + $app) -Type MultiString -Force
+    Start-Process rundll32.exe -ArgumentList 'fthsvc.dll, FthSysprepSpecialize'
     [Windows.MessageBox]::Show("$app added to exclusion list.","Success", 'OK', 'Information')
     Update-ListBox
   }
@@ -208,6 +209,7 @@ $btnRemove.Add_Click({
     $updated = $list | Where-Object { $_ -ne $selected }
 
     Set-ItemProperty -Path $regPath -Name ExclusionList -Value $updated -Type MultiString -Force
+    Start-Process rundll32.exe -ArgumentList 'fthsvc.dll, FthSysprepSpecialize'
     [Windows.MessageBox]::Show("Removed $selected from exclusion list.", "Success", 'OK', 'Information')
     Update-ListBox
 })
